@@ -176,11 +176,16 @@
             border: 1px solid #ccc; 
             border-radius: 8px; 
             font-family: inherit; 
-            font-size: 1.1rem; /* Erhöhte Schriftgröße für besseres Tippen */
+            font-size: 1.1rem;
             background-color: #fff;
             color: #333;
             -webkit-appearance: none;
             appearance: none;
+            resize: none; /* Verhindert manuelles Vergrößern */
+        }
+
+        #replyText {
+            min-height: 120px;
         }
 
         .modal-content select {
@@ -199,6 +204,7 @@
             cursor: pointer; 
             font-weight: bold; 
             font-size: 1.1rem;
+            width: 100%;
             transition: transform 0.1s;
         }
         .btn-orange:active { transform: scale(0.98); }
@@ -241,7 +247,7 @@
         <div style="text-align: center; width: 100%;">
             <h2 style="color: var(--boels-orange);">MECHCONNECT</h2>
             <input type="email" id="userEmail" placeholder="vorname.nachname@boels.de" style="padding:12px; width:100%; max-width:300px; border-radius:5px; border:none;">
-            <br><br><button class="btn-orange" onclick="login()">Einloggen</button>
+            <br><br><button class="btn-orange" style="max-width:300px;" onclick="login()">Einloggen</button>
         </div>
     </div>
 
@@ -255,7 +261,7 @@
         </div>
         <div class="header-controls">
             <input type="text" class="search-bar-header" id="globalSearch" placeholder="Suchen..." onkeyup="handleSearch()">
-            <button id="headerBtnNeu" onclick="openNewPostModal()">+ NEU</button>
+            <button id="headerBtnNeu" style="width: auto;" onclick="openNewPostModal()">+ NEU</button>
         </div>
     </header>
 
@@ -295,11 +301,11 @@
                     <div class="comment-section-divider">ANTWORTEN & LÖSUNGEN</div>
                     <div id="commentList"></div>
                     <div class="reply-box">
-                        <textarea id="replyText" placeholder="Schreibe etwas dazu..." style="min-height:120px; margin-bottom:10px;"></textarea>
+                        <textarea id="replyText" placeholder="Schreibe etwas dazu..." style="margin-bottom:10px;"></textarea>
                         <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
                             <label class="btn-upload">📷 Bild / Datei hinzufügen <input type="file" id="replyFiles" multiple accept="image/*" hidden onchange="updateFileLabel('replyFiles', 'replyFileStatus')"></label>
                             <span id="replyFileStatus" style="font-size:0.8rem; color:#666;"></span>
-                            <button class="btn-orange" style="width:100%; max-width:300px;" onclick="submitReply()">Antworten</button>
+                            <button class="btn-orange" onclick="submitReply()">Antworten</button>
                         </div>
                     </div>
                 </div>
@@ -332,7 +338,7 @@
                 <div id="postFileStatus" style="font-size:0.8rem; color:#666; text-align:center;"></div>
             </div>
 
-            <button onclick="savePost()" class="btn-orange" style="width:100%;">Beitrag veröffentlichen</button>
+            <button onclick="savePost()" class="btn-orange">Beitrag veröffentlichen</button>
             <button onclick="document.getElementById('postModal').style.display='none'" class="btn-cancel">Abbrechen</button>
         </div>
     </div>
@@ -348,7 +354,7 @@
         <div class="modal-content" style="text-align: center; border-top: 5px solid var(--boels-orange); width: 400px; max-width: 90%;">
             <h3 style="color: var(--boels-black); margin-top: 0;">Hinweis</h3>
             <p id="alertMessage" style="margin: 20px 0; line-height: 1.5; color: #333;"></p>
-            <button onclick="document.getElementById('alertModal').style.display='none'" class="btn-orange" style="width: 100%;">OK</button>
+            <button onclick="document.getElementById('alertModal').style.display='none'" class="btn-orange">OK</button>
         </div>
     </div>
 
