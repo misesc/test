@@ -15,7 +15,6 @@
             --boels-orange: #FF6600; 
             --boels-black: #1a1a1a; 
             --boels-grey: #f4f4f4; 
-            /* Safe Area Variablen */
             --safe-area-inset-top: env(safe-area-inset-top);
             --safe-area-inset-bottom: env(safe-area-inset-bottom); 
         }
@@ -34,7 +33,6 @@
         header { 
             background: var(--boels-orange); 
             color: white; 
-            /* Dynamisches Padding für die Notch oben */
             padding: calc(var(--safe-area-inset-top) + 0.8rem) 1rem 0.8rem 1rem; 
             display: flex; 
             justify-content: space-between; 
@@ -93,7 +91,6 @@
             background: var(--boels-grey); 
             z-index: 500; 
             padding: 20px; 
-            /* Auch Detailansicht braucht Padding für die Notch */
             padding-top: calc(var(--safe-area-inset-top) + 20px);
             overflow-y: auto; 
         }
@@ -116,7 +113,6 @@
             grid-template-columns: repeat(5, 1fr); 
             z-index: 1000; 
             border-top: 2px solid var(--boels-orange); 
-            /* Abstand für den Home-Indicator unten */
             padding-bottom: var(--safe-area-inset-bottom); 
         }
         .bottom-nav button { background: none; border: none; color: white; padding: 15px 0; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
@@ -138,13 +134,82 @@
         .arrow-left { left: 10px; } .arrow-right { right: 10px; }
 
         #loginOverlay { position: fixed; inset: 0; background: var(--boels-black); z-index: 5000; display: flex; justify-content: center; align-items: center; color: white; padding: 20px; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 10px; }
-        .modal-content { background: white; width: 500px; padding: 30px; border-radius: 12px; max-height: 90vh; overflow-y: auto; }
-        .modal-content h3 { text-align: center; margin-top: 0; margin-bottom: 20px; color: var(--boels-black); }
-        .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; }
         
-        .btn-orange { background: var(--boels-orange); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        .btn-upload { cursor:pointer; background:#eee; padding:12px 20px; border-radius:5px; font-size:0.9rem; border:1px solid #ccc; width: 100%; max-width: 300px; text-align: center; display: inline-block; }
+        /* MODAL STYLING UPDATE */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
+        .modal-content { 
+            background: white; 
+            width: 100%;
+            max-width: 500px; 
+            padding: 25px; 
+            border-radius: 16px; 
+            max-height: 90vh; 
+            overflow-y: auto; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .modal-content h3 { text-align: center; margin-top: 0; margin-bottom: 20px; color: var(--boels-black); font-size: 1.4rem; }
+        
+        .modal-content input, 
+        .modal-content select, 
+        .modal-content textarea { 
+            width: 100%; 
+            padding: 14px; 
+            margin-bottom: 15px; 
+            border: 1px solid #ccc; 
+            border-radius: 8px; 
+            font-family: inherit; 
+            font-size: 1rem;
+            background-color: #fff;
+            appearance: none; /* Entfernt Standard-Styling bei Mobile */
+        }
+
+        /* Spezifisches Styling für das Dropdown */
+        .modal-content select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            padding-right: 40px;
+        }
+
+        .btn-orange { 
+            background: var(--boels-orange); 
+            color: white; 
+            border: none; 
+            padding: 16px 25px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 1.1rem;
+            transition: transform 0.1s;
+        }
+        .btn-orange:active { transform: scale(0.98); }
+
+        .btn-upload { 
+            cursor: pointer; 
+            background: #f8f8f8; 
+            padding: 12px; 
+            border-radius: 8px; 
+            font-size: 0.95rem; 
+            border: 1px dashed #bbb; 
+            width: 100%; 
+            text-align: center; 
+            display: inline-block; 
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        .btn-cancel {
+            width: 100%; 
+            background: white; 
+            border: 1px solid #ccc; 
+            margin-top: 12px; 
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer; 
+            color: #666;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
 
         .content-section { display: none; }
         .content-section.active { display: block; }
@@ -242,12 +307,14 @@
             <input type="text" id="postType" placeholder="Typ (Optional)">
             <input type="text" id="postTitle" placeholder="Titel / Fehlercode *">
             <textarea id="postDesc" rows="5" placeholder="Problembeschreibung... *"></textarea>
-            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:15px;">
+            
+            <div style="margin-bottom: 15px;">
                 <label class="btn-upload">📷 Bild / Datei hinzufügen <input type="file" id="postFiles" multiple accept="image/*" hidden onchange="updateFileLabel('postFiles', 'postFileStatus')"></label>
-                <span id="postFileStatus" style="font-size:0.8rem; color:#666;"></span>
+                <div id="postFileStatus" style="font-size:0.8rem; color:#666; text-align:center;"></div>
             </div>
+
             <button onclick="savePost()" class="btn-orange" style="width:100%;">Beitrag veröffentlichen</button>
-            <button onclick="document.getElementById('postModal').style.display='none'" style="width:100%; background:none; border:none; margin-top:10px; cursor:pointer; color:#666;">Abbrechen</button>
+            <button onclick="document.getElementById('postModal').style.display='none'" class="btn-cancel">Abbrechen</button>
         </div>
     </div>
 
@@ -267,7 +334,6 @@
     </div>
 
     <script>
-        // SPEICHER-LOGIK: Lade gespeicherte Daten oder starte leer
         let posts = JSON.parse(localStorage.getItem('mConnect_DB')) || { feed: [], tips: [], wiki: [] };
         let currentUser = localStorage.getItem('mConnect_User') || "";
         
@@ -282,7 +348,6 @@
                 document.getElementById('loginOverlay').style.display = 'none';
                 document.getElementById('welcomeText').innerText = `Hallo, ${currentUser}!`;
                 showSection('dash');
-                // Lade alle Listen initial
                 ['feed', 'tips', 'wiki'].forEach(cat => renderList(cat));
             }
         };
@@ -401,13 +466,11 @@
             };
             
             posts[activeCategory].unshift(p);
-            // SPEICHERN
             localStorage.setItem('mConnect_DB', JSON.stringify(posts));
             
             renderList(activeCategory);
             document.getElementById('postModal').style.display = 'none';
             
-            // Reset Form
             document.getElementById('postSub').value = ""; document.getElementById('postTitle').value = ""; 
             document.getElementById('postDesc').value = ""; document.getElementById('postFiles').value = "";
             document.getElementById('postManu').value = ""; document.getElementById('postType').value = "";
@@ -487,7 +550,7 @@
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
                         let w = img.width, h = img.height;
-                        if(w > 800) { h *= 800/w; w = 800; } // Bild verkleinern für Speicherplatz
+                        if(w > 800) { h *= 800/w; w = 800; } 
                         canvas.width = w; canvas.height = h;
                         canvas.getContext('2d').drawImage(img, 0, 0, w, h);
                         res(canvas.toDataURL('image/jpeg', 0.6));
