@@ -90,21 +90,37 @@
             inset: 0; 
             background: var(--boels-grey); 
             z-index: 500; 
-            padding: 20px; 
-            padding-top: calc(var(--safe-area-inset-top) + 20px);
+            padding: 15px; 
+            padding-top: calc(var(--safe-area-inset-top) + 10px);
             overflow-y: auto; 
         }
-        .detail-content-card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 1000px; margin: 0 auto 100px auto; }
-        .back-btn { background: var(--boels-black); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; }
+        .detail-content-card { background: white; border-radius: 12px; padding: 25px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 1000px; margin: 0 auto 100px auto; }
+        
+        .back-btn { 
+            background: var(--boels-black); 
+            color: white; 
+            border: none; 
+            padding: 10px 18px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 8px; 
+            font-size: 0.9rem;
+        }
 
-        .comment-section-divider { margin: 40px -30px 20px -30px; background: #f0f0f0; padding: 15px 30px; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; font-weight: bold; color: #333; text-align: center; }
+        .comment-section-divider { margin: 30px -25px 10px -25px; background: #f0f0f0; padding: 12px 25px; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; font-weight: bold; color: #333; text-align: center; }
         
         .comment { padding: 15px 0; border-bottom: 1px solid #ddd; }
-        .comment p { margin-bottom: 0; line-height: 1.4; } /* Leerzeile nach Beschreibung entfernt */
+        .comment p { margin: 8px 0; line-height: 1.4; } 
         
-        .attachment-grid { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
-        .thumb-box { width: 100px; height: 100px; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; cursor: pointer; }
+        .attachment-grid { display: flex; gap: 10px; margin: 12px 0; flex-wrap: wrap; }
+        .thumb-box { width: 90px; height: 90px; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; cursor: pointer; }
         .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
+
+        .reply-box { margin-top: 20px; }
 
         .bottom-nav { 
             display: none; 
@@ -152,23 +168,19 @@
         
         .modal-content input, 
         .modal-content select, 
-        .modal-content textarea { 
+        .modal-content textarea,
+        #replyText { 
             width: 100%; 
             padding: 14px; 
             margin-bottom: 15px; 
             border: 1px solid #ccc; 
             border-radius: 8px; 
             font-family: inherit; 
-            font-size: 1rem;
+            font-size: 1.1rem; /* Erhöhte Schriftgröße für besseres Tippen */
             background-color: #fff;
             color: #333;
             -webkit-appearance: none;
             appearance: none;
-        }
-
-        /* Größere Schrift für Textareas beim Tippen */
-        textarea#replyText, textarea#postDesc {
-            font-size: 1.1rem;
         }
 
         .modal-content select {
@@ -283,7 +295,7 @@
                     <div class="comment-section-divider">ANTWORTEN & LÖSUNGEN</div>
                     <div id="commentList"></div>
                     <div class="reply-box">
-                        <textarea id="replyText" placeholder="Schreibe etwas dazu..." style="width:100%; padding:15px; border-radius:8px; border:1px solid #ccc; min-height:120px; font-family:inherit; margin-bottom:10px;"></textarea>
+                        <textarea id="replyText" placeholder="Schreibe etwas dazu..." style="min-height:120px; margin-bottom:10px;"></textarea>
                         <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
                             <label class="btn-upload">📷 Bild / Datei hinzufügen <input type="file" id="replyFiles" multiple accept="image/*" hidden onchange="updateFileLabel('replyFiles', 'replyFileStatus')"></label>
                             <span id="replyFileStatus" style="font-size:0.8rem; color:#666;"></span>
@@ -497,7 +509,7 @@
             
             const body = document.getElementById('detailBody');
             body.innerHTML = `<div class="tag-row"><span class="sub-tag">${p.sub}</span><span class="manu-tag">${p.manu}</span>${p.type ? `<span class="manu-tag">${p.type}</span>` : ''}</div>
-                <h1>${p.title}</h1><p style="white-space: pre-wrap; user-select: text;">${p.desc}</p>
+                <h1 style="margin: 10px 0;">${p.title}</h1><p style="white-space: pre-wrap; user-select: text; margin-bottom: 15px;">${p.desc}</p>
                 <div class="attachment-grid">${p.urls.map((u, i) => `<div class="thumb-box" onclick='openGallery(${JSON.stringify(p.urls)}, ${i})'><img src="${u}"></div>`).join('')}</div>
                 <div style="font-size:0.9rem; color:#666; border-top:1px solid #eee; padding-top:10px;"><strong>${p.user}</strong> | 📅 ${p.date}</div>`;
             
