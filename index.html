@@ -98,7 +98,9 @@
         .back-btn { background: var(--boels-black); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; }
 
         .comment-section-divider { margin: 40px -30px 20px -30px; background: #f0f0f0; padding: 15px 30px; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; font-weight: bold; color: #333; text-align: center; }
+        
         .comment { padding: 15px 0; border-bottom: 1px solid #ddd; }
+        .comment p { margin-bottom: 0; line-height: 1.4; } /* Leerzeile nach Beschreibung entfernt */
         
         .attachment-grid { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
         .thumb-box { width: 100px; height: 100px; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; cursor: pointer; }
@@ -159,9 +161,14 @@
             font-family: inherit; 
             font-size: 1rem;
             background-color: #fff;
-            color: #333; /* Erzwingt dunkle Schriftfarbe */
-            -webkit-appearance: none; /* Entfernt iPhone-Standard-Styling */
+            color: #333;
+            -webkit-appearance: none;
             appearance: none;
+        }
+
+        /* Größere Schrift für Textareas beim Tippen */
+        textarea#replyText, textarea#postDesc {
+            font-size: 1.1rem;
         }
 
         .modal-content select {
