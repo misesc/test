@@ -64,8 +64,33 @@
         nav li { padding: 12px 15px; border-radius: 8px; margin-bottom: 5px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
         nav li:hover { background: #333; }
         nav li.active { background: var(--boels-orange); color: white; font-weight: bold; }
+        nav li.active .boels-icon { stroke: white; }
 
         main { flex-grow: 1; padding: 20px; overflow-y: auto; padding-bottom: calc(100px + var(--safe-area-inset-bottom)); position: relative; }
+
+        .boels-icon { 
+            width: 24px; 
+            height: 24px; 
+            stroke: var(--boels-orange); 
+            flex-shrink: 0;
+        }
+        
+        /* Linksbündiger Kasten für Sektions-Header */
+        .section-header-box {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--boels-orange);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Links zentriert */
+            gap: 15px;
+            margin: 0 0 25px 0; /* Links ausgerichtet */
+            max-width: fit-content;
+        }
+        .section-header-box h1 { margin: 0; font-size: 1.5rem; color: var(--boels-black); }
+        .section-header-box .boels-icon { width: 32px; height: 32px; stroke-width: 2.5px; }
 
         .dash-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; max-width: 800px; }
         .dash-tile { 
@@ -74,7 +99,6 @@
             display: flex; align-items: center; gap: 20px; transition: background 0.2s;
         }
         .dash-tile:hover { background: #fdfdfd; }
-        .dash-tile i { font-size: 2.2rem; min-width: 40px; text-align: center; font-style: normal; }
         .dash-tile h3 { font-size: 1.3rem; margin: 0; color: var(--boels-black); }
 
         .post-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 3px 8px rgba(0,0,0,0.05); cursor: pointer; border-left: 5px solid var(--boels-orange); }
@@ -120,6 +144,11 @@
         .thumb-box { width: 90px; height: 90px; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; cursor: pointer; }
         .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
 
+        .preview-scroll-area { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; margin-bottom: 15px; }
+        .preview-item { position: relative; width: 70px; height: 70px; flex-shrink: 0; border-radius: 6px; border: 2px solid var(--boels-orange); overflow: hidden; }
+        .preview-item img { width: 100%; height: 100%; object-fit: cover; }
+        .preview-remove { position: absolute; top: 0; right: 0; background: rgba(255,0,0,0.8); color: white; width: 20px; height: 20px; font-size: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; border-bottom-left-radius: 6px; font-weight: bold; }
+
         .reply-box { margin-top: 20px; }
 
         .bottom-nav { 
@@ -133,10 +162,19 @@
             border-top: 2px solid var(--boels-orange); 
             padding-bottom: var(--safe-area-inset-bottom); 
         }
-        .bottom-nav button { background: none; border: none; color: white; padding: 15px 0; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-        .bottom-nav button.active { color: var(--boels-orange); }
+        .bottom-nav button { background: none; border: none; color: white; padding: 15px 0; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .bottom-nav button .boels-icon { stroke: white; width: 28px; height: 28px; }
+        .bottom-nav button.active .boels-icon { stroke: var(--boels-orange); }
         
-        #bnav-neu { color: var(--boels-orange) !important; font-size: 2.2rem !important; visibility: hidden; }
+        #bnav-neu .boels-icon { 
+            stroke: var(--boels-orange) !important; 
+            width: 32px; 
+            height: 32px;
+            border: 2px solid var(--boels-orange);
+            border-radius: 50%;
+            padding: 2px;
+        }
+        #bnav-neu { visibility: hidden; }
 
         @media (max-width: 768px) { 
             nav { display: none; } 
@@ -181,12 +219,10 @@
             color: #333;
             -webkit-appearance: none;
             appearance: none;
-            resize: none; /* Verhindert manuelles Vergrößern */
+            resize: none; 
         }
 
-        #replyText {
-            min-height: 120px;
-        }
+        #replyText { min-height: 120px; }
 
         .modal-content select {
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23333' d='M10.293 3.293L6 7.586 1.707 3.293A1 1 0 00.293 4.707l5 5a1 1 0 001.414 0l5-5a1 1 0 10-1.414-1.414z'/%3E%3C/svg%3E");
@@ -269,10 +305,18 @@
         <nav>
             <h4>Hauptmenü</h4>
             <ul>
-                <li id="menu-dash" class="active" onclick="showSection('dash')">🏠 Home</li>
-                <li id="menu-feed" onclick="showSection('feed')">🚨 Soforthilfe</li>
-                <li id="menu-tips" onclick="showSection('tips')">💡 Tipps & Tricks</li>
-                <li id="menu-wiki" onclick="showSection('wiki')">📚 Wiki</li>
+                <li id="menu-dash" class="active" onclick="showSection('dash')">
+                    <svg class="boels-icon" viewBox="0 0 24 24" fill="none"><rect x="5" y="5" width="14" height="14" rx="2" stroke-width="2"/></svg> Home
+                </li>
+                <li id="menu-feed" onclick="showSection('feed')">
+                    <svg class="boels-icon" viewBox="0 0 24 24" fill="none" stroke-linejoin="round"><rect x="5" y="6" width="14" height="10" rx="2" stroke-width="2"/><path d="M10 16L9 19L14 16" stroke-width="2"/></svg> Soforthilfe
+                </li>
+                <li id="menu-tips" onclick="showSection('tips')">
+                    <svg class="boels-icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12L10 16L18 8" stroke-width="2"/></svg> Tipps & Tricks
+                </li>
+                <li id="menu-wiki" onclick="showSection('wiki')">
+                    <svg class="boels-icon" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="1" stroke-width="2"/><path d="M9 8H15M9 12H15M9 16H13" stroke-linecap="round" stroke-width="2"/></svg> Wiki
+                </li>
             </ul>
         </nav>
 
@@ -280,9 +324,18 @@
             <div id="section-dash" class="content-section active">
                 <h1 id="welcomeText">Willkommen!</h1>
                 <div id="dashDefault" class="dash-grid">
-                    <div class="dash-tile" onclick="showSection('feed')"><i>🚨</i><h3>Soforthilfe</h3></div>
-                    <div class="dash-tile" onclick="showSection('tips')"><i>💡</i><h3>Tipps & Tricks</h3></div>
-                    <div class="dash-tile" onclick="showSection('wiki')"><i>📚</i><h3>Wiki</h3></div>
+                    <div class="dash-tile" onclick="showSection('feed')">
+                        <svg class="boels-icon" viewBox="0 0 24 24" fill="none" stroke-linejoin="round"><rect x="5" y="6" width="14" height="10" rx="2" stroke-width="2"/><path d="M10 16L9 19L14 16" stroke-width="2"/></svg>
+                        <h3>Soforthilfe</h3>
+                    </div>
+                    <div class="dash-tile" onclick="showSection('tips')">
+                        <svg class="boels-icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12L10 16L18 8" stroke-width="2"/></svg>
+                        <h3>Tipps & Tricks</h3>
+                    </div>
+                    <div class="dash-tile" onclick="showSection('wiki')">
+                        <svg class="boels-icon" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="1" stroke-width="2"/><path d="M9 8H15M9 12H15M9 16H13" stroke-linecap="round" stroke-width="2"/></svg>
+                        <h3>Wiki</h3>
+                    </div>
                 </div>
                 <div id="searchResults">
                     <h2>Ergebnisse:</h2>
@@ -290,9 +343,29 @@
                 </div>
             </div>
 
-            <div id="section-feed" class="content-section"><h1>🚨 Soforthilfe</h1><div id="feedList"></div></div>
-            <div id="section-tips" class="content-section"><h1>💡 Tipps & Tricks</h1><div id="tipsList"></div></div>
-            <div id="section-wiki" class="content-section"><h1>📚 Wiki</h1><div id="wikiList"></div></div>
+            <div id="section-feed" class="content-section">
+                <div class="section-header-box">
+                    <svg class="boels-icon" viewBox="0 0 24 24" fill="none" stroke-linejoin="round"><rect x="5" y="6" width="14" height="10" rx="2" stroke-width="2"/><path d="M10 16L9 19L14 16" stroke-width="2"/></svg>
+                    <h1>Soforthilfe</h1>
+                </div>
+                <div id="feedList"></div>
+            </div>
+            
+            <div id="section-tips" class="content-section">
+                <div class="section-header-box">
+                    <svg class="boels-icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12L10 16L18 8" stroke-width="2"/></svg>
+                    <h1>Tipps & Tricks</h1>
+                </div>
+                <div id="tipsList"></div>
+            </div>
+            
+            <div id="section-wiki" class="content-section">
+                <div class="section-header-box">
+                    <svg class="boels-icon" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="1" stroke-width="2"/><path d="M9 8H15M9 12H15M9 16H13" stroke-linecap="round" stroke-width="2"/></svg>
+                    <h1>Wiki</h1>
+                </div>
+                <div id="wikiList"></div>
+            </div>
 
             <div id="detailPage">
                 <button class="back-btn" onclick="closeDetail()">Zurück</button>
@@ -302,9 +375,9 @@
                     <div id="commentList"></div>
                     <div class="reply-box">
                         <textarea id="replyText" placeholder="Schreibe etwas dazu..." style="margin-bottom:10px;"></textarea>
+                        <div id="replyPreviewArea" class="preview-scroll-area"></div>
                         <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
-                            <label class="btn-upload">📷 Bild / Datei hinzufügen <input type="file" id="replyFiles" multiple accept="image/*" hidden onchange="updateFileLabel('replyFiles', 'replyFileStatus')"></label>
-                            <span id="replyFileStatus" style="font-size:0.8rem; color:#666;"></span>
+                            <label class="btn-upload">📷 Bild hinzufügen <input type="file" id="replyFiles" multiple accept="image/*" hidden onchange="handleFileSelection(this, 'replyPreviewArea')"></label>
                             <button class="btn-orange" onclick="submitReply()">Antworten</button>
                         </div>
                     </div>
@@ -314,11 +387,21 @@
     </div>
 
     <div class="bottom-nav">
-        <button id="bnav-dash" onclick="showSection('dash')" class="active">🏠</button>
-        <button id="bnav-feed" onclick="showSection('feed')">🚨</button>
-        <button id="bnav-neu" onclick="openNewPostModal()">➕</button>
-        <button id="bnav-tips" onclick="showSection('tips')">💡</button>
-        <button id="bnav-wiki" onclick="showSection('wiki')">📚</button>
+        <button id="bnav-dash" onclick="showSection('dash')" class="active">
+            <svg class="boels-icon" viewBox="0 0 24 24" fill="none"><rect x="5" y="5" width="14" height="14" rx="2" stroke-width="2"/></svg>
+        </button>
+        <button id="bnav-feed" onclick="showSection('feed')">
+            <svg class="boels-icon" viewBox="0 0 24 24" fill="none" stroke-linejoin="round"><rect x="5" y="6" width="14" height="10" rx="2" stroke-width="2"/><path d="M10 16L9 19L14 16" stroke-width="2"/></svg>
+        </button>
+        <button id="bnav-neu" onclick="openNewPostModal()">
+            <svg class="boels-icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round"><path d="M12 7V17M7 12H17" stroke-width="2"/></svg>
+        </button>
+        <button id="bnav-tips" onclick="showSection('tips')">
+            <svg class="boels-icon" viewBox="0 0 24 24" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12L10 16L18 8" stroke-width="2"/></svg>
+        </button>
+        <button id="bnav-wiki" onclick="showSection('wiki')">
+            <svg class="boels-icon" viewBox="0 0 24 24" fill="none"><rect x="6" y="4" width="12" height="16" rx="1" stroke-width="2"/><path d="M9 8H15M9 12H15M9 16H13" stroke-linecap="round" stroke-width="2"/></svg>
+        </button>
     </div>
 
     <div id="postModal" class="modal">
@@ -333,9 +416,10 @@
             <input type="text" id="postTitle" placeholder="Titel / Fehlercode *">
             <textarea id="postDesc" rows="5" placeholder="Problembeschreibung... *"></textarea>
             
+            <div id="postPreviewArea" class="preview-scroll-area"></div>
+
             <div style="margin-bottom: 15px;">
-                <label class="btn-upload">📷 Bild / Datei hinzufügen <input type="file" id="postFiles" multiple accept="image/*" hidden onchange="updateFileLabel('postFiles', 'postFileStatus')"></label>
-                <div id="postFileStatus" style="font-size:0.8rem; color:#666; text-align:center;"></div>
+                <label class="btn-upload">📷 Bild hinzufügen <input type="file" id="postFiles" multiple accept="image/*" hidden onchange="handleFileSelection(this, 'postPreviewArea')"></label>
             </div>
 
             <button onclick="savePost()" class="btn-orange">Beitrag veröffentlichen</button>
@@ -368,6 +452,8 @@
         let activePost = null; 
         const categoryNames = { feed: "Soforthilfe", tips: "Tipps & Tricks", wiki: "Wiki" };
 
+        let selectedFiles = [];
+
         window.onload = () => {
             if(currentUser) {
                 document.getElementById('loginOverlay').style.display = 'none';
@@ -391,6 +477,35 @@
                 document.getElementById('welcomeText').innerText = `Hallo, ${currentUser}!`;
                 showSection('dash');
             } else { showAlert("Bitte @boels.de Mail nutzen."); }
+        }
+
+        async function handleFileSelection(input, previewId) {
+            const files = Array.from(input.files);
+            for (let file of files) {
+                const base64 = await readFile(file);
+                selectedFiles.push(base64);
+            }
+            renderPreview(previewId);
+            input.value = ""; 
+        }
+
+        function renderPreview(previewId) {
+            const container = document.getElementById(previewId);
+            container.innerHTML = "";
+            selectedFiles.forEach((url, index) => {
+                const item = document.createElement('div');
+                item.className = 'preview-item';
+                item.innerHTML = `
+                    <img src="${url}">
+                    <div class="preview-remove" onclick="removePreviewFile(${index}, '${previewId}')">×</div>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function removePreviewFile(index, previewId) {
+            selectedFiles.splice(index, 1);
+            renderPreview(previewId);
         }
 
         function showSection(id) {
@@ -464,8 +579,9 @@
         }
 
         function openNewPostModal() {
+            selectedFiles = [];
+            document.getElementById('postPreviewArea').innerHTML = "";
             document.getElementById('modalTitle').innerText = "Neuer Beitrag für " + categoryNames[activeCategory];
-            document.getElementById('postFileStatus').innerText = "";
             document.getElementById('postModal').style.display = 'flex';
         }
 
@@ -476,29 +592,23 @@
             const desc = document.getElementById('postDesc').value.trim();
             const type = document.getElementById('postType').value.trim();
 
-            if (!sub || !manu || !title || !desc) {
-                return showAlert("Bitte alle Pflichtfelder (*) ausfüllen!");
-            }
-            if (sub.length < 5) {
-                return showAlert("Die Subgruppe muss mindestens 5 Zeichen enthalten!");
-            }
+            if (!sub || !manu || !title || !desc) { return showAlert("Bitte alle Pflichtfelder (*) ausfüllen!"); }
+            if (sub.length < 5) { return showAlert("Die Subgruppe muss mindestens 5 Zeichen enthalten!"); }
 
-            const urls = await Promise.all(Array.from(document.getElementById('postFiles').files).map(f => readFile(f)));
             const p = { 
-                id: Date.now(), sub, manu, title, desc, urls, type, user: currentUser, views: 0, 
+                id: Date.now(), sub, manu, title, desc, urls: [...selectedFiles], type, user: currentUser, views: 0, 
                 date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
                 comments: []
             };
             
             posts[activeCategory].unshift(p);
             localStorage.setItem('mConnect_DB', JSON.stringify(posts));
-            
             renderList(activeCategory);
             document.getElementById('postModal').style.display = 'none';
             
             document.getElementById('postSub').value = ""; document.getElementById('postTitle').value = ""; 
-            document.getElementById('postDesc').value = ""; document.getElementById('postFiles').value = "";
-            document.getElementById('postManu').value = ""; document.getElementById('postType').value = "";
+            document.getElementById('postDesc').value = ""; document.getElementById('postManu').value = ""; 
+            document.getElementById('postType').value = ""; selectedFiles = [];
         }
 
         function renderList(cat) {
@@ -512,7 +622,10 @@
             activePost = p;
             p.views++;
             localStorage.setItem('mConnect_DB', JSON.stringify(posts));
-            
+            selectedFiles = [];
+            document.getElementById('replyPreviewArea').innerHTML = "";
+            document.getElementById('replyText').value = "";
+
             const body = document.getElementById('detailBody');
             body.innerHTML = `<div class="tag-row"><span class="sub-tag">${p.sub}</span><span class="manu-tag">${p.manu}</span>${p.type ? `<span class="manu-tag">${p.type}</span>` : ''}</div>
                 <h1 style="margin: 10px 0;">${p.title}</h1><p style="white-space: pre-wrap; user-select: text; margin-bottom: 15px;">${p.desc}</p>
@@ -539,20 +652,14 @@
 
         async function submitReply() {
             const txt = document.getElementById('replyText').value.trim();
-            const urls = await Promise.all(Array.from(document.getElementById('replyFiles').files).map(f => readFile(f)));
-            if(!txt && urls.length === 0) return;
-            
+            if(!txt && selectedFiles.length === 0) return;
             const timeString = new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-            
             if(!activePost.comments) activePost.comments = [];
-            activePost.comments.push({
-                user: currentUser, text: txt, urls: urls, date: timeString
-            });
-            
+            activePost.comments.push({ user: currentUser, text: txt, urls: [...selectedFiles], date: timeString });
             localStorage.setItem('mConnect_DB', JSON.stringify(posts));
             renderComments();
-            
-            document.getElementById('replyText').value = ""; document.getElementById('replyFiles').value = ""; document.getElementById('replyFileStatus').innerText = "";
+            document.getElementById('replyText').value = ""; selectedFiles = [];
+            document.getElementById('replyPreviewArea').innerHTML = "";
         }
 
         function openGallery(urls, i) {
@@ -584,11 +691,6 @@
                 };
                 reader.readAsDataURL(f); 
             }); 
-        }
-
-        function updateFileLabel(inputId, statusId) { 
-            const count = document.getElementById(inputId).files.length; 
-            document.getElementById(statusId).innerText = count > 0 ? count + " Datei(en) ausgewählt" : ""; 
         }
     </script>
 </body>
