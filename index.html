@@ -2,152 +2,95 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-title" content="MechConnect">
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>MechConnect | Professional</title>
     <style>
-        :root { 
-            --boels-orange: #FF6600; 
-            --boels-black: #1a1a1a; 
-            --boels-grey: #f4f4f4; 
-            --safe-area-inset-bottom: env(safe-area-inset-bottom);
-        }
-
-        * { 
-            box-sizing: border-box; 
-            -webkit-tap-highlight-color: transparent; 
-            user-select: none; /* Verhindert Textmarkierung beim Klicken */
-        }
-
-        body { 
-            font-family: 'Segoe UI', sans-serif; 
-            margin: 0; 
-            background: var(--boels-grey); 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
-            overscroll-behavior: none; /* Verhindert das "Ziehen" der Seite */
-        }
-        
-        header { 
-            background: var(--boels-orange); 
-            color: white; 
-            padding: 1.2rem 1rem 0.8rem 1rem; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            z-index: 100; 
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
-            flex-shrink: 0; 
-        }
-        
-        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        :root { --boels-orange: #FF6600; --boels-black: #1a1a1a; --boels-grey: #f4f4f4; }
+        * { box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; margin: 0; background: var(--boels-grey); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        header { background: var(--boels-orange); color: white; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center; z-index: 100; box-shadow: 0 2px 10px rgba(0,0,0,0.1); flex-shrink: 0; gap: 15px; }
+        .logo-container { display: flex; align-items: center; gap: 10px; cursor: pointer; flex-shrink: 0; }
+        .logo-text { line-height: 1; display: flex; flex-direction: column; }
         .logo-text .main { font-weight: 900; font-size: 1.2rem; letter-spacing: 0.5px; }
-        .logo-text .sub { font-weight: 200; font-size: 0.85rem; letter-spacing: 1px; opacity: 0.9; display: block; }
-
-        .search-bar-header { 
-            width: 130px; 
-            padding: 8px 12px; 
-            border-radius: 20px; 
-            border: none; 
-            font-size: 0.85rem; 
-            outline: none; 
-            transition: width 0.3s;
-        }
-        .search-bar-header:focus { width: 180px; }
-
+        .logo-text .sub { font-weight: 200; font-size: 0.85rem; letter-spacing: 1px; opacity: 0.9; }
+        .header-controls { flex-grow: 1; display: flex; justify-content: flex-end; align-items: center; gap: 10px; }
+        .search-bar-header { width: 100%; max-width: 300px; padding: 8px 15px; border-radius: 20px; border: none; font-size: 0.9rem; outline: none; }
+        #headerBtnNeu { display: none; background: white; color: var(--boels-orange); border: none; padding: 8px 18px; border-radius: 20px; font-weight: bold; cursor: pointer; white-space: nowrap; }
         .main-wrapper { display: flex; flex-grow: 1; overflow: hidden; position: relative; }
-        
-        nav { width: 250px; background: var(--boels-black); color: white; padding: 20px; flex-shrink: 0; }
-        nav li { padding: 12px 15px; border-radius: 8px; margin-bottom: 5px; cursor: pointer; display: flex; align-items: center; gap: 10px; }
-        nav li.active { background: var(--boels-orange); font-weight: bold; }
-
-        main { 
-            flex-grow: 1; 
-            padding: 15px; 
-            overflow-y: auto; 
-            -webkit-overflow-scrolling: touch; 
-            padding-bottom: calc(80px + var(--safe-area-inset-bottom)); 
-        }
-
-        .dash-tile { 
-            background: white; padding: 20px; border-radius: 12px; margin-bottom: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 6px solid var(--boels-orange); 
-            display: flex; align-items: center; gap: 15px;
-        }
-        .dash-tile h3 { margin: 0; font-size: 1.1rem; }
-
-        .post-card { 
-            background: white; border-radius: 12px; padding: 15px; margin-bottom: 12px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06); border-left: 4px solid var(--boels-orange); 
-        }
-
-        .bottom-nav { 
-            display: none; 
-            position: fixed; 
-            bottom: 0; 
-            width: 100%; 
-            background: var(--boels-black); 
-            grid-template-columns: repeat(5, 1fr); 
-            padding-bottom: var(--safe-area-inset-bottom);
-            z-index: 1000;
-        }
-        .bottom-nav button { background: none; border: none; color: white; padding: 15px 0; font-size: 1.5rem; }
-        .bottom-nav button.active { color: var(--boels-orange); }
-
-        #detailPage { display: none; position: absolute; inset: 0; background: var(--boels-grey); z-index: 500; padding: 15px; overflow-y: auto; }
-        .detail-content-card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 100px; }
-
-        /* Verstecke UI-Elemente für Desktop/Mobile Weichen */
-        @media (max-width: 768px) { 
-            nav { display: none; } 
-            .bottom-nav { display: grid; } 
-        }
-
-        /* Modals & Overlays */
-        #loginOverlay { position: fixed; inset: 0; background: var(--boels-black); z-index: 5000; display: flex; justify-content: center; align-items: center; color: white; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 15px; }
-        .modal-content { background: white; width: 100%; max-width: 500px; padding: 25px; border-radius: 15px; max-height: 85vh; overflow-y: auto; }
-        
-        input, select, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem; }
-        .btn-orange { background: var(--boels-orange); color: white; border: none; padding: 14px; border-radius: 8px; font-weight: bold; width: 100%; font-size: 1rem; cursor: pointer; }
-        
-        .tag-row { display: flex; gap: 5px; margin-bottom: 8px; }
-        .sub-tag { background: #333; color: white; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; }
-        .manu-tag { background: #eee; padding: 3px 8px; border-radius: 4px; font-size: 0.75rem; }
-
-        .thumb-box { width: 80px; height: 80px; border-radius: 8px; overflow: hidden; margin-right: 8px; border: 1px solid #ddd; }
+        nav { width: 250px; background: var(--boels-black); color: white; padding: 20px; flex-shrink: 0; display: flex; flex-direction: column; }
+        nav h4 { color: #666; text-transform: uppercase; font-size: 0.8rem; margin: 20px 0 10px 0; }
+        nav ul { padding: 0; list-style: none; margin: 0; }
+        nav li { padding: 12px 15px; border-radius: 8px; margin-bottom: 5px; cursor: pointer; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+        nav li:hover { background: #333; }
+        nav li.active { background: var(--boels-orange); color: white; font-weight: bold; }
+        main { flex-grow: 1; padding: 20px; overflow-y: auto; padding-bottom: 100px; position: relative; }
+        .dash-grid { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; max-width: 800px; }
+        .dash-tile { background: white; padding: 25px; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-left: 8px solid var(--boels-orange); display: flex; align-items: center; gap: 20px; transition: background 0.2s; }
+        .dash-tile:hover { background: #fdfdfd; }
+        .dash-tile i { font-size: 2.2rem; min-width: 40px; text-align: center; }
+        .dash-tile h3 { font-size: 1.3rem; margin: 0; color: var(--boels-black); }
+        .post-card { background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px; box-shadow: 0 3px 8px rgba(0,0,0,0.05); cursor: pointer; border-left: 5px solid var(--boels-orange); }
+        .search-cat-header { background: var(--boels-black); color: white; padding: 8px 15px; border-radius: 6px; margin: 25px 0 10px 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        .tag-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+        .sub-tag { background: var(--boels-black); color: white; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; }
+        .manu-tag { background: #eee; color: #333; padding: 4px 10px; border-radius: 4px; font-weight: bold; font-size: 0.8rem; border: 1px solid #ddd; }
+        #detailPage { display: none; position: absolute; inset: 0; background: var(--boels-grey); z-index: 500; padding: 20px; overflow-y: auto; }
+        .detail-content-card { background: white; border-radius: 12px; padding: 30px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 1000px; margin: 0 auto 100px auto; }
+        .back-btn { background: var(--boels-black); color: white; border: none; padding: 12px 20px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 8px; }
+        .comment-section-divider { margin: 40px -30px 20px -30px; background: #f0f0f0; padding: 15px 30px; border-top: 1px solid #ddd; border-bottom: 1px solid #ddd; font-weight: bold; color: #333; text-align: center; }
+        .comment { padding: 15px 0; border-bottom: 1px solid #ddd; }
+        .attachment-grid { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
+        .thumb-box { width: 100px; height: 100px; border-radius: 6px; overflow: hidden; border: 1px solid #ddd; cursor: pointer; }
         .thumb-box img { width: 100%; height: 100%; object-fit: cover; }
-        .attachment-grid { display: flex; overflow-x: auto; padding: 10px 0; }
+        .bottom-nav { display: none; position: fixed; bottom: 0; width: 100%; background: var(--boels-black); grid-template-columns: repeat(5, 1fr); z-index: 1000; border-top: 2px solid var(--boels-orange); }
+        .bottom-nav button { background: none; border: none; color: white; padding: 15px 0; font-size: 1.8rem; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        .bottom-nav button.active { color: var(--boels-orange); }
+        #bnav-neu { color: var(--boels-orange) !important; font-size: 2.2rem !important; visibility: hidden; }
+        @media (max-width: 768px) { nav { display: none; } .bottom-nav { display: grid; } .search-bar-header { max-width: 150px; font-size: 0.8rem; } }
+        #galleryOverlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 6000; justify-content: center; align-items: center; }
+        .gallery-img { max-width: 90%; max-height: 85%; object-fit: contain; }
+        .close-gallery { position: absolute; top: 20px; right: 20px; color: white; font-size: 3rem; cursor: pointer; font-weight: bold; }
+        .nav-arrow { position: absolute; top: 50%; transform: translateY(-50%); background: none; color: white; border: none; font-size: 4rem; padding: 20px; cursor: pointer; }
+        .arrow-left { left: 10px; } .arrow-right { right: 10px; }
+        #loginOverlay { position: fixed; inset: 0; background: var(--boels-black); z-index: 5000; display: flex; justify-content: center; align-items: center; color: white; padding: 20px; }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; justify-content: center; align-items: center; padding: 10px; }
+        .modal-content { background: white; width: 500px; padding: 30px; border-radius: 12px; max-height: 90vh; overflow-y: auto; }
+        .modal-content h3 { text-align: center; margin-top: 0; margin-bottom: 20px; color: var(--boels-black); }
+        .modal-content input, .modal-content select, .modal-content textarea { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 6px; font-family: inherit; }
+        .btn-orange { background: var(--boels-orange); color: white; border: none; padding: 12px 25px; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        .btn-upload { cursor:pointer; background:#eee; padding:12px 20px; border-radius:5px; font-size:0.9rem; border:1px solid #ccc; width: 100%; max-width: 300px; text-align: center; display: inline-block; }
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+        #searchResults { margin-top: 20px; display: none; }
     </style>
 </head>
 <body>
 
     <div id="loginOverlay">
-        <div style="text-align: center; width: 80%;">
-            <h1 style="color: var(--boels-orange); font-size: 2rem;">MECHCONNECT</h1>
-            <p>Techniker-Portal</p>
-            <input type="email" id="userEmail" placeholder="vorname.nachname@boels.de">
-            <button class="btn-orange" onclick="login()">Einloggen</button>
+        <div style="text-align: center; width: 100%;">
+            <h2 style="color: var(--boels-orange);">MECHCONNECT</h2>
+            <input type="email" id="userEmail" placeholder="vorname.nachname@boels.de" style="padding:12px; width:100%; max-width:300px; border-radius:5px; border:none;">
+            <br><br><button class="btn-orange" onclick="login()">Einloggen</button>
         </div>
     </div>
 
     <header>
         <div class="logo-container" onclick="showSection('dash')">
+            <svg width="35" height="35" viewBox="0 0 100 100">
+                <path d="M50 5 L89 27.5 L89 72.5 L50 95 L11 72.5 L11 27.5 Z" fill="none" stroke="white" stroke-width="8" stroke-linejoin="round"/>
+                <path d="M30 65 V35 L50 55 L70 35 V65" fill="none" stroke="white" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
             <div class="logo-text"><span class="main">MECH</span><span class="sub">CONNECT</span></div>
         </div>
-        <input type="text" class="search-bar-header" id="globalSearch" placeholder="Suchen..." onkeyup="handleSearch()">
+        <div class="header-controls">
+            <input type="text" class="search-bar-header" id="globalSearch" placeholder="Suchen..." onkeyup="handleSearch()">
+            <button id="headerBtnNeu" onclick="openNewPostModal()">+ NEU</button>
+        </div>
     </header>
 
     <div class="main-wrapper">
         <nav>
-            <h4>Menü</h4>
+            <h4>Hauptmenü</h4>
             <ul>
                 <li id="menu-dash" class="active" onclick="showSection('dash')">🏠 Home</li>
                 <li id="menu-feed" onclick="showSection('feed')">🚨 Soforthilfe</li>
@@ -155,32 +98,33 @@
                 <li id="menu-wiki" onclick="showSection('wiki')">📚 Wiki</li>
             </ul>
         </nav>
-
-        <main id="scrollArea">
+        <main>
             <div id="section-dash" class="content-section active">
-                <h2 id="welcomeText">Hallo!</h2>
-                <div id="dashDefault">
+                <h1 id="welcomeText">Willkommen!</h1>
+                <div id="dashDefault" class="dash-grid">
                     <div class="dash-tile" onclick="showSection('feed')"><i>🚨</i><h3>Soforthilfe</h3></div>
                     <div class="dash-tile" onclick="showSection('tips')"><i>💡</i><h3>Tipps & Tricks</h3></div>
                     <div class="dash-tile" onclick="showSection('wiki')"><i>📚</i><h3>Wiki</h3></div>
                 </div>
-                <div id="searchResults" style="display:none;"><h3>Ergebnisse:</h3><div id="searchList"></div></div>
+                <div id="searchResults"><h2>Ergebnisse:</h2><div id="searchList"></div></div>
             </div>
-
-            <div id="section-feed" class="content-section"><h2>🚨 Soforthilfe</h2><div id="feedList"></div></div>
-            <div id="section-tips" class="content-section"><h2>💡 Tipps & Tricks</h2><div id="tipsList"></div></div>
-            <div id="section-wiki" class="content-section"><h2>📚 Wiki</h2><div id="wikiList"></div></div>
-
+            <div id="section-feed" class="content-section"><h1>🚨 Soforthilfe</h1><div id="feedList"></div></div>
+            <div id="section-tips" class="content-section"><h1>💡 Tipps & Tricks</h1><div id="tipsList"></div></div>
+            <div id="section-wiki" class="content-section"><h1>📚 Wiki</h1><div id="wikiList"></div></div>
             <div id="detailPage">
-                <button onclick="closeDetail()" style="background:#333; color:white; border:none; padding:10px 15px; border-radius:8px; margin-bottom:15px;">← Zurück</button>
+                <button class="back-btn" onclick="closeDetail()">Zurück</button>
                 <div class="detail-content-card">
                     <div id="detailBody"></div>
-                    <hr>
-                    <h4>Antworten</h4>
+                    <div class="comment-section-divider">ANTWORTEN & LÖSUNGEN</div>
                     <div id="commentList"></div>
-                    <textarea id="replyText" placeholder="Deine Lösung oder Frage..."></textarea>
-                    <input type="file" id="replyFiles" multiple accept="image/*" style="font-size: 0.8rem;">
-                    <button class="btn-orange" onclick="submitReply()">Antwort senden</button>
+                    <div class="reply-box">
+                        <textarea id="replyText" placeholder="Schreibe etwas dazu..." style="width:100%; padding:15px; border-radius:8px; border:1px solid #ccc; min-height:120px; font-family:inherit; margin-bottom:10px;"></textarea>
+                        <div style="display:flex; flex-direction:column; align-items:center; gap:10px;">
+                            <label class="btn-upload">📷 Bild hinzufügen <input type="file" id="replyFiles" multiple accept="image/*" hidden onchange="updateFileLabel('replyFiles', 'replyFileStatus')"></label>
+                            <span id="replyFileStatus" style="font-size:0.8rem; color:#666;"></span>
+                            <button class="btn-orange" style="width:100%; max-width:300px;" onclick="submitReply()">Antworten</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -189,61 +133,155 @@
     <div class="bottom-nav">
         <button id="bnav-dash" onclick="showSection('dash')" class="active">🏠</button>
         <button id="bnav-feed" onclick="showSection('feed')">🚨</button>
-        <button id="bnav-neu" onclick="openNewPostModal()" style="color:var(--boels-orange); font-size:2rem; visibility:hidden;">+</button>
+        <button id="bnav-neu" onclick="openNewPostModal()">➕</button>
         <button id="bnav-tips" onclick="showSection('tips')">💡</button>
         <button id="bnav-wiki" onclick="showSection('wiki')">📚</button>
     </div>
 
     <div id="postModal" class="modal">
         <div class="modal-content">
-            <h3>Neuer Beitrag</h3>
-            <input type="text" id="postSub" placeholder="Subgruppe (mind. 5 Zeichen) *">
+            <h3 id="modalTitle">Neuer Beitrag</h3>
+            <input type="text" id="postSub" placeholder="Subgruppe (z.B. 12052) *">
             <select id="postManu">
                 <option value="">Hersteller wählen *</option>
                 <option>Atlas Copco</option><option>Haulotte</option><option>JLG</option><option>Kubota</option><option>Wacker Neuson</option>
             </select>
             <input type="text" id="postType" placeholder="Typ (Optional)">
             <input type="text" id="postTitle" placeholder="Titel / Fehlercode *">
-            <textarea id="postDesc" rows="4" placeholder="Beschreibung... *"></textarea>
-            <input type="file" id="postFiles" multiple accept="image/*">
-            <button onclick="savePost()" class="btn-orange">Veröffentlichen</button>
-            <button onclick="document.getElementById('postModal').style.display='none'" style="background:none; border:none; width:100%; margin-top:10px; color:#666;">Abbrechen</button>
+            <textarea id="postDesc" rows="5" placeholder="Problembeschreibung... *"></textarea>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:15px;">
+                <label class="btn-upload">📷 Bild hinzufügen <input type="file" id="postFiles" multiple accept="image/*" hidden onchange="updateFileLabel('postFiles', 'postFileStatus')"></label>
+                <span id="postFileStatus" style="font-size:0.8rem; color:#666;"></span>
+            </div>
+            <button onclick="savePost()" class="btn-orange" style="width:100%;">Beitrag veröffentlichen</button>
+            <button onclick="document.getElementById('postModal').style.display='none'" style="width:100%; background:none; border:none; margin-top:10px; cursor:pointer; color:#666;">Abbrechen</button>
+        </div>
+    </div>
+
+    <div id="galleryOverlay">
+        <span class="close-gallery" onclick="closeGallery()">&times;</span>
+        <button class="nav-arrow arrow-left" onclick="changeGalleryImage(-1)">&#10094;</button>
+        <img id="galleryImg" class="gallery-img" src="">
+        <button class="nav-arrow arrow-right" onclick="changeGalleryImage(1)">&#10095;</button>
+    </div>
+
+    <div id="alertModal" class="modal">
+        <div class="modal-content" style="text-align: center; border-top: 5px solid var(--boels-orange); width: 400px; max-width: 90%;">
+            <h3 style="color: var(--boels-black); margin-top: 0;">Hinweis</h3>
+            <p id="alertMessage" style="margin: 20px 0; line-height: 1.5; color: #333;"></p>
+            <button onclick="document.getElementById('alertModal').style.display='none'" class="btn-orange" style="width: 100%;">OK</button>
         </div>
     </div>
 
     <script>
-        // SPEICHER-LOGIK
-        let posts = JSON.parse(localStorage.getItem('mConnect_Posts')) || { feed: [], tips: [], wiki: [] };
-        let currentUser = localStorage.getItem('mConnect_User') || "";
+        // DATEN AUS LOCALSTORAGE LADEN
+        let posts = JSON.parse(localStorage.getItem('mechConnectData')) || { feed: [], tips: [], wiki: [] };
+        let currentUser = localStorage.getItem('mechConnectUser') || "";
+        let activeCategory = "feed";
+        let currentSection = "dash";
+        let currentGalleryImages = [], currentGalleryIndex = 0;
+        const categoryNames = { feed: "Soforthilfe", tips: "Tipps & Tricks", wiki: "Wiki" };
 
         window.onload = () => {
             if(currentUser) {
                 document.getElementById('loginOverlay').style.display = 'none';
-                document.getElementById('welcomeText').innerText = `Hallo, ${currentUser.split(' ')[0]}!`;
-                renderAll();
+                document.getElementById('welcomeText').innerText = `Hallo, ${currentUser}!`;
+                renderAllLists();
             }
         };
+
+        function saveToDevice() {
+            localStorage.setItem('mechConnectData', JSON.stringify(posts));
+        }
+
+        function showAlert(msg) {
+            document.getElementById('alertMessage').innerText = msg;
+            document.getElementById('alertModal').style.display = 'flex';
+        }
 
         function login() {
             const mail = document.getElementById('userEmail').value.trim();
             if(mail.toLowerCase().endsWith('@boels.de')) {
-                currentUser = mail.split('@')[0].replace('.', ' ').replace(/\b\w/g, l => l.toUpperCase());
-                localStorage.setItem('mConnect_User', currentUser);
+                currentUser = mail.split('@')[0].split('.').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                localStorage.setItem('mechConnectUser', currentUser);
                 document.getElementById('loginOverlay').style.display = 'none';
-                location.reload();
-            } else { alert("Bitte Boels-Mail nutzen."); }
+                document.getElementById('welcomeText').innerText = `Hallo, ${currentUser}!`;
+                showSection('dash');
+            } else { showAlert("Bitte @boels.de Mail nutzen."); }
         }
 
         function showSection(id) {
+            currentSection = id;
             document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
             document.querySelectorAll('nav li, .bottom-nav button').forEach(el => el.classList.remove('active'));
             document.getElementById('detailPage').style.display = 'none';
-            document.getElementById('section-' + id).classList.add('active');
-            document.getElementById('bnav-neu').style.visibility = (id === 'dash') ? 'hidden' : 'visible';
+            if(document.getElementById('section-' + id)) document.getElementById('section-' + id).classList.add('active');
+            
+            const mobilePlusBtn = document.getElementById('bnav-neu');
+            const desktopPlusBtn = document.getElementById('headerBtnNeu');
+            
+            if(id === 'dash') {
+                mobilePlusBtn.style.visibility = 'hidden';
+                desktopPlusBtn.style.display = 'none';
+            } else {
+                mobilePlusBtn.style.visibility = 'visible';
+                desktopPlusBtn.style.display = 'block';
+                activeCategory = id;
+                renderList(id);
+            }
             
             const mItem = document.getElementById('menu-' + id); if(mItem) mItem.classList.add('active');
             const bItem = document.getElementById('bnav-' + id); if(bItem) bItem.classList.add('active');
-            if(id !== 'dash') renderList(id);
+        }
+
+        function handleSearch() {
+            const val = document.getElementById('globalSearch').value.toLowerCase().trim();
+            const dashDefault = document.getElementById('dashDefault');
+            const searchResults = document.getElementById('searchResults');
+            const searchList = document.getElementById('searchList');
+
+            const filterFn = (p) => (
+                p.title.toLowerCase().includes(val) || 
+                p.sub.toLowerCase().includes(val) || 
+                p.manu.toLowerCase().includes(val) || 
+                (p.type && p.type.toLowerCase().includes(val)) || 
+                p.desc.toLowerCase().includes(val)
+            );
+
+            if(currentSection === 'dash') {
+                if(val === "") { dashDefault.style.display = 'flex'; searchResults.style.display = 'none'; }
+                else {
+                    dashDefault.style.display = 'none'; searchResults.style.display = 'block'; searchList.innerHTML = "";
+                    ['feed', 'tips', 'wiki'].forEach(cat => {
+                        const results = posts[cat].filter(filterFn);
+                        if(results.length > 0) {
+                            const header = document.createElement('div');
+                            header.className = 'search-cat-header'; header.innerText = categoryNames[cat];
+                            searchList.appendChild(header);
+                            results.forEach(p => searchList.appendChild(createPostCard(p, cat)));
+                        }
+                    });
+                }
+            } else { 
+                const container = document.getElementById(activeCategory + 'List');
+                container.innerHTML = '';
+                posts[activeCategory].filter(filterFn).forEach(p => container.appendChild(createPostCard(p, activeCategory)));
+            }
+        }
+
+        function createPostCard(p, cat) {
+            const card = document.createElement('div');
+            card.className = 'post-card';
+            card.onclick = () => openDetail(p, cat);
+            card.innerHTML = `<div class="tag-row"><span class="sub-tag">${p.sub}</span><span class="manu-tag">${p.manu}</span>${p.type ? `<span class="manu-tag">${p.type}</span>` : ''}</div>
+                <strong>${p.title}</strong><br><small>👤 ${p.user} | 📅 ${p.date} | 👀 ${p.views}</small>`;
+            return card;
+        }
+
+        function openNewPostModal() {
+            document.getElementById('modalTitle').innerText = "Neuer Beitrag für " + categoryNames[activeCategory];
+            document.getElementById('postFileStatus').innerText = "";
+            document.getElementById('postModal').style.display = 'flex';
         }
 
         async function savePost() {
@@ -253,128 +291,117 @@
             const desc = document.getElementById('postDesc').value.trim();
             const type = document.getElementById('postType').value.trim();
 
-            if(!sub || !manu || !title || !desc) return alert("Pflichtfelder fehlen!");
-            if(sub.length < 5) return alert("Subgruppe zu kurz (mind. 5 Zeichen)!");
+            if (!sub || !manu || !title || !desc) return showAlert("Bitte alle Pflichtfelder (*) ausfüllen!");
+            if (sub.length < 5) return showAlert("Die Subgruppe muss mindestens 5 Zeichen enthalten!");
 
-            const files = document.getElementById('postFiles').files;
-            const urls = await Promise.all(Array.from(files).map(f => compressImage(f)));
-
-            const newPost = {
-                id: Date.now(), sub, manu, title, desc, type, urls, user: currentUser,
-                date: new Date().toLocaleString('de-DE', {day:'2-digit', month:'2-digit', year:'numeric', hour:'2-digit', minute:'2-digit'}),
-                views: 0, comments: []
+            const urls = await Promise.all(Array.from(document.getElementById('postFiles').files).map(f => readFile(f)));
+            const p = { 
+                id: Date.now(), sub, manu, title, desc, urls, type, user: currentUser, views: 0, comments: [],
+                date: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) 
             };
-
-            const cat = document.querySelector('nav li.active').id.replace('menu-', '');
-            posts[cat].unshift(newPost);
-            localStorage.setItem('mConnect_Posts', JSON.stringify(posts));
+            
+            posts[activeCategory].unshift(p);
+            saveToDevice();
+            renderList(activeCategory);
             document.getElementById('postModal').style.display = 'none';
-            renderList(cat);
+            // Reset
+            document.getElementById('postSub').value = ""; document.getElementById('postTitle').value = ""; 
+            document.getElementById('postDesc').value = ""; document.getElementById('postFiles').value = "";
+            document.getElementById('postManu').value = ""; document.getElementById('postType').value = "";
         }
 
+        function renderAllLists() { ['feed', 'tips', 'wiki'].forEach(cat => renderList(cat)); }
         function renderList(cat) {
             const container = document.getElementById(cat + 'List');
+            if(!container) return;
             container.innerHTML = '';
-            posts[cat].forEach(p => {
-                const card = document.createElement('div');
-                card.className = 'post-card';
-                card.onclick = () => openDetail(p, cat);
-                card.innerHTML = `
-                    <div class="tag-row"><span class="sub-tag">${p.sub}</span><span class="manu-tag">${p.manu}</span></div>
-                    <strong>${p.title}</strong><br>
-                    <small>${p.date} | 👤 ${p.user}</small>
-                `;
-                container.appendChild(card);
-            });
+            posts[cat].forEach(p => container.appendChild(createPostCard(p, cat)));
         }
 
-        function renderAll() { ['feed', 'tips', 'wiki'].forEach(c => renderList(c)); }
-
-        let activePostRef = null;
+        let currentActivePost = null;
         function openDetail(p, cat) {
-            activePostRef = p;
             p.views++;
-            localStorage.setItem('mConnect_Posts', JSON.stringify(posts));
-            document.getElementById('detailBody').innerHTML = `
-                <div class="tag-row"><span class="sub-tag">${p.sub}</span><span class="manu-tag">${p.manu}</span></div>
-                <h3>${p.title}</h3>
-                <p style="white-space:pre-wrap;">${p.desc}</p>
-                <div class="attachment-grid">${p.urls.map(u => `<div class="thumb-box"><img src="${u}"></div>`).join('')}</div>
-                <small>Gepostet von ${p.user} am ${p.date}</small>
-            `;
-            renderComments();
+            currentActivePost = p;
+            saveToDevice();
+            const body = document.getElementById('detailBody');
+            body.innerHTML = `<div class="tag-row"><span class="sub-tag">${p.sub}</span><span class="manu-tag">${p.manu}</span>${p.type ? `<span class="manu-tag">${p.type}</span>` : ''}</div>
+                <h1>${p.title}</h1><p style="white-space: pre-wrap;">${p.desc}</p>
+                <div class="attachment-grid">${p.urls.map((u, i) => `<div class="thumb-box" onclick='openGallery(${JSON.stringify(p.urls)}, ${i})'><img src="${u}"></div>`).join('')}</div>
+                <div style="font-size:0.9rem; color:#666; border-top:1px solid #eee; padding-top:10px;"><strong>${p.user}</strong> | 📅 ${p.date}</div>`;
             document.getElementById('detailPage').style.display = 'block';
+            renderComments();
+        }
+
+        function renderComments() {
+            const list = document.getElementById('commentList');
+            list.innerHTML = '';
+            (currentActivePost.comments || []).forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'comment';
+                div.innerHTML = `<div style="font-size:0.8rem; color:#666;"><strong>${c.user}</strong> | 📅 ${c.date}</div><p>${c.text}</p>
+                    <div class="attachment-grid">${(c.urls || []).map((u, i) => `<div class="thumb-box" onclick='openGallery(${JSON.stringify(c.urls)}, ${i})'><img src="${u}"></div>`).join('')}</div>`;
+                list.appendChild(div);
+            });
         }
 
         async function submitReply() {
             const txt = document.getElementById('replyText').value.trim();
-            if(!txt) return;
-            const urls = await Promise.all(Array.from(document.getElementById('replyFiles').files).map(f => compressImage(f)));
+            const urls = await Promise.all(Array.from(document.getElementById('replyFiles').files).map(f => readFile(f)));
+            if(!txt && urls.length === 0) return;
             
-            activePostRef.comments.push({
-                user: currentUser, text: txt, urls: urls,
-                date: new Date().toLocaleString('de-DE', {day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit'})
-            });
-            localStorage.setItem('mConnect_Posts', JSON.stringify(posts));
+            const now = new Date();
+            const comment = {
+                user: currentUser,
+                text: txt,
+                urls: urls,
+                date: now.toLocaleDateString() + " " + now.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})
+            };
+            
+            if(!currentActivePost.comments) currentActivePost.comments = [];
+            currentActivePost.comments.push(comment);
+            saveToDevice();
             renderComments();
-            document.getElementById('replyText').value = "";
-        }
-
-        function renderComments() {
-            const cList = document.getElementById('commentList');
-            cList.innerHTML = '';
-            activePostRef.comments.forEach(c => {
-                const div = document.createElement('div');
-                div.style.padding = "10px 0; border-bottom: 1px solid #eee;";
-                div.innerHTML = `<strong>${c.user}</strong> <small style="color:#999">${c.date}</small><br>${c.text}
-                <div class="attachment-grid">${c.urls.map(u => `<div class="thumb-box"><img src="${u}"></div>`).join('')}</div>`;
-                cList.appendChild(div);
-            });
+            document.getElementById('replyText').value = ""; document.getElementById('replyFiles').value = ""; document.getElementById('replyFileStatus').innerText = "";
         }
 
         function closeDetail() { document.getElementById('detailPage').style.display = 'none'; }
-        function openNewPostModal() { document.getElementById('postModal').style.display = 'flex'; }
 
-        function handleSearch() {
-            const val = document.getElementById('globalSearch').value.toLowerCase();
-            const results = document.getElementById('searchResults');
-            const list = document.getElementById('searchList');
-            if(!val) { results.style.display = 'none'; document.getElementById('dashDefault').style.display = 'block'; return; }
-            
-            document.getElementById('dashDefault').style.display = 'none';
-            results.style.display = 'block';
-            list.innerHTML = '';
-            
-            ['feed', 'tips', 'wiki'].forEach(cat => {
-                posts[cat].filter(p => p.title.toLowerCase().includes(val) || p.sub.includes(val) || p.manu.toLowerCase().includes(val)).forEach(p => {
-                    const card = document.createElement('div');
-                    card.className = 'post-card';
-                    card.onclick = () => openDetail(p, cat);
-                    card.innerHTML = `<strong>[${cat.toUpperCase()}] ${p.title}</strong><br><small>${p.sub} | ${p.manu}</small>`;
-                    list.appendChild(card);
-                });
-            });
-        }
-
-        // BILDER VERKLEINERN
-        function compressImage(file) {
-            return new Promise(res => {
+        // BILD-KOMPRESSION
+        async function readFile(file) {
+            return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const img = new Image();
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        let w = img.width, h = img.height;
-                        if(w > 800) { h *= 800/w; w = 800; }
-                        canvas.width = w; canvas.height = h;
-                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-                        res(canvas.toDataURL('image/jpeg', 0.6));
+                        let width = img.width, height = img.height, max = 800;
+                        if (width > height && width > max) { height *= max / width; width = max; }
+                        else if (height > max) { width *= max / height; height = max; }
+                        canvas.width = width; canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.7));
                     };
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             });
         }
+
+        function updateFileLabel(inputId, statusId) { 
+            const count = document.getElementById(inputId).files.length; 
+            document.getElementById(statusId).innerText = count > 0 ? count + " Bild(er) bereit" : ""; 
+        }
+
+        function openGallery(urls, i) {
+            currentGalleryImages = urls; currentGalleryIndex = i;
+            document.getElementById('galleryImg').src = urls[i];
+            document.getElementById('galleryOverlay').style.display = 'flex';
+        }
+        function changeGalleryImage(s) {
+            currentGalleryIndex = (currentGalleryIndex + s + currentGalleryImages.length) % currentGalleryImages.length;
+            document.getElementById('galleryImg').src = currentGalleryImages[currentGalleryIndex];
+        }
+        function closeGallery() { document.getElementById('galleryOverlay').style.display = 'none'; }
     </script>
 </body>
 </html>
