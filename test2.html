@@ -11,9 +11,41 @@
         [x-cloak] { display: none !important; }
         .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
         .post-content { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+        
+        /* Login Styles */
+        #loginOverlay { 
+            position: fixed; 
+            inset: 0; 
+            background: #262626; 
+            z-index: 5000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: white; 
+            padding: 20px; 
+        }
+        .login-card { text-align: center; width: 100%; max-width: 320px; }
+        .login-input { 
+            padding: 16px; width: 100%; border-radius: 12px; border: none; 
+            margin-bottom: 20px; color: #262626; font-size: 1rem; outline: none;
+        }
     </style>
 </head>
 <body class="bg-[#F3F4F6] font-sans antialiased text-[#262626]" x-data="app()" x-init="init()">
+
+    <div id="loginOverlay" x-show="!user" x-cloak>
+        <div class="login-card">
+            <div class="mb-8">
+                <i data-lucide="wrench" class="w-16 h-16 text-[#FF6600] mx-auto mb-4"></i>
+                <h2 class="text-3xl font-black italic uppercase text-white">MechConnect</h2>
+                <p class="text-gray-400 font-bold uppercase text-xs tracking-widest">Professional Access</p>
+            </div>
+            <input type="email" id="userEmail" placeholder="vorname.nachname@boels.de" class="login-input">
+            <button @click="login()" class="w-full bg-[#FF6600] text-white py-4 rounded-2xl font-black uppercase italic shadow-lg active:scale-95 transition-transform">
+                Einloggen
+            </button>
+        </div>
+    </div>
 
     <div x-show="popup.show" x-cloak class="fixed inset-0 z-[300] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm" @click.stop>
         <div class="bg-white rounded-3xl p-8 max-w-sm w-full shadow-2xl text-center space-y-4">
@@ -267,11 +299,32 @@
                 init() {
                     const savedUser = localStorage.getItem('mc-user');
                     const savedPosts = localStorage.getItem('mc-posts');
-                    if (savedUser) this.user = JSON.parse(savedUser);
+                    
+                    if (savedUser) {
+                        this.user = JSON.parse(savedUser);
+                    }
+                    
                     this.posts = savedPosts ? JSON.parse(savedPosts) : [];
-                    // Zufälliger Spruch beim Laden
                     this.welcomeMsg = this.sprueche[Math.floor(Math.random() * this.sprueche.length)];
-                    setTimeout(() => { this.isLoading = false; this.refreshIcons(); }, 1200);
+                    
+                    // Initialer Ladevorgang
+                    this.isLoading = false;
+                    this.refreshIcons();
+                },
+
+                login() {
+                    const mail = document.getElementById('userEmail').value.trim();
+                    if(mail.toLowerCase().endsWith('@boels.de')) {
+                        // Namen generieren wie in index3.html
+                        const name = mail.split('@')[0].split('.').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+                        this.user = { name: name, email: mail };
+                        localStorage.setItem('mc-user', JSON.stringify(this.user));
+                        
+                        // Icons nach dem Login laden
+                        this.$nextTick(() => { this.refreshIcons(); });
+                    } else { 
+                        this.showPopup("Zugriff verweigert", "Bitte nutze deine offizielle @boels.de E-Mail Adresse."); 
+                    }
                 },
 
                 getInitials(name) {
